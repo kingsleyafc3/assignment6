@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+        background-color: white;
+    }
+        #center{
+            text-align: center;
+        }
+        div#memory_board{
+            background: white;
+            border: 1px solid white;
+
+            width:1050px;
+            height:500px;
+            padding:24px;
+            margin:0px auto;
+        }
+        div#memory_board > div{
+            
+            border:#000 1px solid;
+            width:200px;
+            height:200px;
+            float:left;
+            margin:10px;
+            padding:20px;
+            font-size:64px;
+            cursor:pointer;
+            text-align:center;
+        }
+    </style>
+    <script>
+        var array_ind = [];
+        array_ind[0] = 'realmad';
+        array_ind[1] = 'barca';
+        array_ind[2] = 'manuni';
+        array_ind[3] = 'liverpool';
+        array_ind[4] = 'realmad';
+        array_ind[5] = 'barca';
+        array_ind[6] = 'manuni';
+        array_ind[7] = 'liverpool';
+
+        var array_val = [];
+        var table_tile = [];
+        var show_tiles = 0;
+        Array.prototype.memory_tile_shuffle = function () {
+            var i = this.length, j, temp;
+            while (--i > 0) {
+                j = Math.floor(Math.random() * (i + 1));
+                temp = this[j];
+                this[j] = this[i];
+                this[i] = temp;
+            }
+        }
+        function create_board() {
+            show_tiles = 0;
+            var output = '';
+            array_ind.memory_tile_shuffle();
+            for (var i = 0; i < array_ind.length; i++) {
+                output += '<div id="tile_' + i + '" onclick="showarr_tiles(this,\'' + array_ind[i] + '\')"></div>';
+            }
+            document.getElementById('memory_board').innerHTML = output;
+        }
+
+        function showarr_tiles(tile, val) {
+            if (tile.innerHTML == "" && array_val.length < 2) {
+                tile.style.background = '#666666';
+                tile.innerHTML = '<img src="' + val + '.jpg"/>';
+                if (array_val.length == 0) {
+                    array_val.push(val);
+                    table_tile.push(tile.id);
+                } else if (array_val.length == 1) {
+                    array_val.push(val);
+                    table_tile.push(tile.id);
+                    if (array_val[0] == array_val[1]) {
+                        show_tiles += 2;
+
+                        array_val = [];
+                        table_tile = [];
+
+                        if (show_tiles == array_ind.length) {
+                            alert("Great!... Generating New Sets of board");
+                            document.getElementById('memory_board').innerHTML = "";
+                            create_board();
+                        }
+                    } else {
+                        function flip2Back() {
+
+                            var table_tile1 = document.getElementById(table_tile[0]);
+                            var table_tile_2 = document.getElementById(table_tile[1]);
+                            table_tile1.style.background = 'url(b12.png) no-repeat';
+                            table_tile1.innerHTML = "";
+                            table_tile_2.style.background = 'url(b12.png) no-repeat';
+                            table_tile_2.innerHTML = "";
+
+                            array_val = [];
+                            table_tile = [];
+                        }
+
+                        setTimeout(flip2Back, 700);
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<a href="employees.html" style="background: black">Part A</a>
+<a href="guessinggame.html" style="background: black">Part B</a>
+
+<br>
+
+<div id="center">
+<a href="match8.html">Press here for 8 tile</a>
+<a href="match10.html">Press here for 10 tile</a>
+<a href="match12.html">Press here for 12 tile</a>
+</div>
+
+
+<div id="memory_board"></div>
+<script>create_board();</script>
+
+</body>
+</html>
